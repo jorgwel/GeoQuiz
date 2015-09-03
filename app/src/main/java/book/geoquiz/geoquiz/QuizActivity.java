@@ -19,6 +19,8 @@ public class QuizActivity extends AppCompatActivity {
     private Button mTrueButton;
     private Button mFalseButton;
     private Button mNextButton;
+    private Button mPrevButton;
+
     private TextView mQuestionTextView;
     private Question question;
     private int mCurrentIndex = 0;
@@ -38,6 +40,12 @@ public class QuizActivity extends AppCompatActivity {
         setContentView(R.layout.activity_quiz);
 
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
+        mQuestionTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                incrementIndexAndUpdate();
+            }
+        });
 
         mTrueButton = (Button)findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
@@ -59,13 +67,35 @@ public class QuizActivity extends AppCompatActivity {
         mNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                updateQuestion();
+                incrementIndexAndUpdate();
+            }
+        });
+
+        mPrevButton = (Button) findViewById(R.id.previous_button);
+        mPrevButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Decrementing", TAG);
+                decrementIndexAndUpdate();
             }
         });
 
         updateQuestion();
 
+    }
+
+    private void decrementIndexAndUpdate() {
+        mCurrentIndex = mCurrentIndex - 1 <= 0 ?
+                                    mQuestionBank.length -1
+                                    :
+                                    mCurrentIndex - 1;
+
+        updateQuestion();
+    }
+
+    private void incrementIndexAndUpdate() {
+        mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+        updateQuestion();
     }
 
     private void checkAnswer(boolean userClickedOnTrueButton) {

@@ -14,30 +14,43 @@
         android:padding="24dp"
         />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+    <GridLayout android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="2"
+                android:orientation="horizontal"
+                android:useDefaultMargins="true"
+                android:alignmentMode="alignBounds"
+                >
 
         <Button
             android:id="@+id/true_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/true_button"/>
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/true_button"
+            android:layout_gravity="fill_horizontal"
+            />
         <Button
             android:id="@+id/false_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/false_button"
+            />
+        <Button
+            android:id="@+id/previous_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/false_button"/>
+            android:text="@string/previous_button"
+            android:drawableLeft="@drawable/arrow_left"
+            android:drawablePadding="4dp"/>
+        <Button
+            android:id="@+id/next_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/next_button"
+            android:drawableRight="@drawable/arrow_right"
+            android:drawablePadding="4dp"/>
 
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/next_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/next_button"
-        android:drawableRight="@drawable/arrow_right"
-        android:drawablePadding="4dp"/>
+    </GridLayout>
 
 </LinearLayout>
