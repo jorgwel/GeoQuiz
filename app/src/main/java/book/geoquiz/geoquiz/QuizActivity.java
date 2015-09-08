@@ -18,6 +18,7 @@ public class QuizActivity extends AppCompatActivity {
 
     private final static String TAG =  "QuizActivity";
     private final static String KEY_INDEX =  "index";
+    private final static String KEY_USER_HAS_ANSWER_SHOWN = "book.geoquiz.geoquiz.has_cheated";
     private final static int REQUEST_CODE_CHEAT = 0;
 
 
@@ -43,7 +44,7 @@ public class QuizActivity extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         Log.d(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
-
+        savedInstanceState.putBoolean(KEY_USER_HAS_ANSWER_SHOWN, mIsCheater);
 
     }
 
@@ -132,6 +133,7 @@ public class QuizActivity extends AppCompatActivity {
     private void recoverFromActivityRestart(Bundle savedInstanceState) {
         if(savedInstanceState != null){
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
+            mIsCheater = savedInstanceState.getBoolean(KEY_USER_HAS_ANSWER_SHOWN, false);
         }
     }
 
