@@ -14,9 +14,18 @@ public class CheatActivity extends AppCompatActivity {
 
     private final static String EXTRA_ANSWER_IS_TRUE = "book.geoquiz.geoquiz.answer_is_true";
     private final static String EXTRA_ANSWER_SHOWN = "book.geoquiz.geoquiz.answer_shown";
-    private boolean mAnswerIsTrue;
+    private final static String KEY_USER_HAS_ANSWER_SHOWN = "book.geoquiz.geoquiz.has_cheated";
+    private boolean mAnswerOfCurrentQuestionIsTrue;
+    private boolean mUserHasCheated;
     private TextView mAnswerTextView;
     private Button mShowAnswer;
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstance) {
+        super.onSaveInstanceState(savedInstance);
+        savedInstance.putBoolean(KEY_USER_HAS_ANSWER_SHOWN, mUserHasCheated);
+    }
 
     public static boolean wasAnswerShown(Intent result){
 
@@ -36,6 +45,16 @@ public class CheatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cheat);
         extractingInfoFromIntent();
         setBehaviourOfShowAnswerButton();
+        extractingInfoFromSavedInstanceState(savedInstanceState);
+
+    }
+
+    private void extractingInfoFromSavedInstanceState(Bundle savedInstanceState) {
+        if(savedInstanceState == null){
+            return;
+        }
+        boolean kas = savedInstanceState.getBoolean(KEY_USER_HAS_ANSWER_SHOWN, false);
+        triggerShownMessageStatus(kas);
     }
 
     private void setBehaviourOfShowAnswerButton() {
@@ -44,24 +63,29 @@ public class CheatActivity extends AppCompatActivity {
         mShowAnswer.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mAnswerIsTrue) {
-                    mAnswerTextView.setText(R.string.true_button);
-                } else {
-                    mAnswerTextView.setText(R.string.false_button);
-                }
-                setAnswerShownResult(true);
+                triggerShownMessageStatus(true);
             }
         });
     }
 
-    private void extractingInfoFromIntent() {
-        mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
+    private void triggerShownMessageStatus(boolean messageHasBeenShown) {
+        if (mAnswerOfCurrentQuestionIsTrue) {
+            mAnswerTextView.setText(R.string.true_button);
+        } else {
+            mAnswerTextView.setText(R.string.false_button);
+        }
+        setAnswerShownResult(messageHasBeenShown);
     }
 
     private void setAnswerShownResult(boolean isAnswerShown) {
+        mUserHasCheated = isAnswerShown;
         Intent d = new Intent();
         d.putExtra(EXTRA_ANSWER_SHOWN, isAnswerShown);
         setResult(RESULT_OK, d);
+    }
+
+    private void extractingInfoFromIntent() {
+        mAnswerOfCurrentQuestionIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
     }
 
     @Override
