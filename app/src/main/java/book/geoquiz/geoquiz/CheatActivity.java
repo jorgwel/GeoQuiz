@@ -34,9 +34,11 @@ public class CheatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cheat);
+        extractingInfoFromIntent();
+        setBehaviourOfShowAnswerButton();
+    }
 
-        mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
-
+    private void setBehaviourOfShowAnswerButton() {
         mAnswerTextView = (TextView)findViewById(R.id.answerTextView);
         mShowAnswer = (Button)findViewById(R.id.showAnswerButton);
         mShowAnswer.setOnClickListener(new View.OnClickListener() {
@@ -50,6 +52,10 @@ public class CheatActivity extends AppCompatActivity {
                 setAnswerShownResult(true);
             }
         });
+    }
+
+    private void extractingInfoFromIntent() {
+        mAnswerIsTrue = getIntent().getBooleanExtra(EXTRA_ANSWER_IS_TRUE, false);
     }
 
     private void setAnswerShownResult(boolean isAnswerShown) {

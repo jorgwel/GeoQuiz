@@ -53,34 +53,23 @@ public class QuizActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
 
+        extractingInfoFromIntent();
+        recoverFromActivityRestart(savedInstanceState);
+
+        setBehaviourOfTrueButton();
+        setBehaviourOfFalseButton();
+        setBehaviourOfNextButton();
+        setBehaviourOfCheatButton();
+
+        updateQuestion();
+
+    }
+
+    private void extractingInfoFromIntent() {
         mQuestionTextView = (TextView)findViewById(R.id.question_text_view);
+    }
 
-        mTrueButton = (Button)findViewById(R.id.true_button);
-        mTrueButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkAnswer(true);
-            }
-        });
-
-        mFalseButton = (Button)findViewById(R.id.false_button);
-        mFalseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                checkAnswer(false);
-            }
-        });
-
-        mNextButton = (Button) findViewById(R.id.next_button);
-        mNextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
-                mIsCheater = false;
-                updateQuestion();
-            }
-        });
-
+    private void setBehaviourOfCheatButton() {
         mCheatButton = (Button) findViewById(R.id.cheat_button);
         mCheatButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,18 +80,42 @@ public class QuizActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    private void setBehaviourOfNextButton() {
+        mNextButton = (Button) findViewById(R.id.next_button);
+        mNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentIndex = (mCurrentIndex + 1) % mQuestionBank.length;
+                mIsCheater = false;
+                updateQuestion();
+            }
+        });
+    }
 
-        recoverFromConfigurationChange(savedInstanceState);
+    private void setBehaviourOfFalseButton() {
+        mFalseButton = (Button)findViewById(R.id.false_button);
+        mFalseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAnswer(false);
+            }
+        });
+    }
 
-
-        updateQuestion();
-
+    private void setBehaviourOfTrueButton() {
+        mTrueButton = (Button)findViewById(R.id.true_button);
+        mTrueButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkAnswer(true);
+            }
+        });
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent result) {
-//        super.onActivityResult(requestCode, resultCode, data);
         if(resultCode != Activity.RESULT_OK){
             return;
         }
@@ -116,7 +129,7 @@ public class QuizActivity extends AppCompatActivity {
 
     }
 
-    private void recoverFromConfigurationChange(Bundle savedInstanceState) {
+    private void recoverFromActivityRestart(Bundle savedInstanceState) {
         if(savedInstanceState != null){
             mCurrentIndex = savedInstanceState.getInt(KEY_INDEX, 0);
         }
