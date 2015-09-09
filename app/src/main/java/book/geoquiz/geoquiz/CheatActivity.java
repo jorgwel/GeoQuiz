@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,6 +41,9 @@ public class CheatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_cheat);
         extractingInfoFromIntent();
         setBehaviourOfShowAnswerButton();
+        TextView apiVersionTextView = (TextView)findViewById(R.id.apiVersionLabel);
+        apiVersionTextView.setText("API Level" + Build.VERSION.SDK_INT);
+        apiVersionTextView.setTypeface(Typeface.DEFAULT_BOLD);
     }
 
     private void setBehaviourOfShowAnswerButton() {
