@@ -38,5 +38,11 @@ public class CheatedQuestion implements Parcelable {
         }
     };
 
+    public int getmIndexOfCheatedQuestion() {
+        return mIndexOfCheatedQuestion;
+    }
 
+    public void setmIndexOfCheatedQuestion(int mIndexOfCheatedQuestion) {
+        this.mIndexOfCheatedQuestion = mIndexOfCheatedQuestion;
+    }
 }

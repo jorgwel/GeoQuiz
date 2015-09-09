@@ -53,7 +53,9 @@ public class QuizActivity extends AppCompatActivity {
         Log.d(TAG, "onSaveInstanceState");
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
         savedInstanceState.putBoolean(KEY_USER_HAS_ANSWER_SHOWN, mIsCheater);
+        savedInstanceState.putParcelableArrayList(KEY_LIST_OF_CHEATED_INDEXES, mCheatedQuestionsIndexes);
 
+        Log.d(TAG, mCheatedQuestionsIndexes.toArray().toString());
 
     }
 
@@ -214,6 +216,12 @@ public class QuizActivity extends AppCompatActivity {
     }
 
     private boolean userCheatedOnThisQuestion(int mCurrentIndex) {
+
+        for (int i = 0; i<mCheatedQuestionsIndexes.size(); i++)
+            if(mCheatedQuestionsIndexes.get(i).getmIndexOfCheatedQuestion() == mCurrentIndex){
+                return true;
+            }
+
         return false;
     }
 
