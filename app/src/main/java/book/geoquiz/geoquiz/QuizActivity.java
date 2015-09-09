@@ -12,6 +12,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import book.geoquiz.geoquiz.model.CheatedQuestion;
 import book.geoquiz.geoquiz.model.Question;
 
 public class QuizActivity extends AppCompatActivity {
@@ -19,6 +23,7 @@ public class QuizActivity extends AppCompatActivity {
     private final static String TAG =  "QuizActivity";
     private final static String KEY_INDEX =  "index";
     private final static String KEY_USER_HAS_ANSWER_SHOWN = "book.geoquiz.geoquiz.has_cheated";
+    private final static String KEY_LIST_OF_CHEATED_INDEXES = "book.geoquiz.geoquiz.list_of_cheated_indexes";
     private final static int REQUEST_CODE_CHEAT = 0;
 
 
@@ -30,6 +35,9 @@ public class QuizActivity extends AppCompatActivity {
     private Question question;
     private int mCurrentIndex = 0;
     private boolean mIsCheater;
+
+    private ArrayList<CheatedQuestion> mCheatedQuestionsIndexes;
+
 
     private Question [] mQuestionBank = new Question[]{
             new Question(R.string.question_africa, true),
@@ -46,6 +54,7 @@ public class QuizActivity extends AppCompatActivity {
         savedInstanceState.putInt(KEY_INDEX, mCurrentIndex);
         savedInstanceState.putBoolean(KEY_USER_HAS_ANSWER_SHOWN, mIsCheater);
 
+
     }
 
     @Override
@@ -53,6 +62,13 @@ public class QuizActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         Log.d(TAG, "onCreate(Bundle) called");
         setContentView(R.layout.activity_quiz);
+
+
+        if(savedInstanceState == null || !savedInstanceState.containsKey("KEY_LIST_OF_CHEATED_INDEXES"))
+            mCheatedQuestionsIndexes = new ArrayList<CheatedQuestion>();
+        else
+            mCheatedQuestionsIndexes = savedInstanceState.getParcelableArrayList("KEY_LIST_OF_CHEATED_INDEXES");
+
 
         extractingInfoFromIntent();
         recoverFromActivityRestart(savedInstanceState);
@@ -126,6 +142,8 @@ public class QuizActivity extends AppCompatActivity {
                 return;
             }
             mIsCheater = CheatActivity.wasAnswerShown(result);
+
+            if(mIsCheater) mCheatedQuestionsIndexes.add(new CheatedQuestion(mCurrentIndex));
         }
 
     }
@@ -190,6 +208,13 @@ public class QuizActivity extends AppCompatActivity {
     private void updateQuestion() {
         int questionId = mQuestionBank[mCurrentIndex].getTextId();
         mQuestionTextView.setText(questionId);
+        if(userCheatedOnThisQuestion(mCurrentIndex)){
+            Toast.makeText(QuizActivity.this, R.string.user_cheated_on_this, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private boolean userCheatedOnThisQuestion(int mCurrentIndex) {
+        return false;
     }
 
     @Override
